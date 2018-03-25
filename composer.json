@@ -1,0 +1,30 @@
+{
+    "name": "techlify-inc/laravel-rbac",
+    "description": "Role Based Access Control for Laravel",
+    "type": "package",
+    "require": {
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Techlify Inc.",
+            "email": "info@techlify.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "TechlifyInc\\LaravelRbac\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TechlifyInc\\LaravelRbac\\LaravelRbacServiceProvider"
+            ],
+            "aliases": {
+                "Debugbar": "TechlifyInc\\LaravelRbac\\LaravelRbacFacade"
+            }
+        }
+    }
+}
