@@ -124,3 +124,9 @@ if ($user->hasPermission('product.create')) {
 // OR for currently logged in user
 if (auth()->user()->hasPermission('product.create'))
 ```
+
+You can also enforce permissions at route level using the middleware (v0.2 onwards): 
+
+```php
+Route::get("customers", "CustomerController@index")->middleware("LaravelRbacEnforcePermission:customer_view");
+``
