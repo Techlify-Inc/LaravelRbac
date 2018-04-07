@@ -3,6 +3,7 @@
 namespace TechlifyInc\LaravelRbac;
 
 use Illuminate\Support\ServiceProvider;
+use TechlifyInc\LaravelRbac\Middleware\LaravelRbacEnforcePermission;
 
 /**
  * Description of RbacServiceProvider
@@ -17,10 +18,12 @@ class LaravelRbacServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(\Illuminate\Routing\Router $router)
     {
         $this->loadRoutesFrom(__DIR__ . '/routes/routes.php');
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        
+        $router->aliasMiddleware('LaravelRbacEnforcePermission', LaravelRbacEnforcePermission::class);
     }
 
     /**
