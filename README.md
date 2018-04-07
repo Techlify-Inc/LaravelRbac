@@ -129,4 +129,4 @@ You can also enforce permissions at route level using the middleware (v0.2 onwar
 
 ```php
 Route::get("customers", "CustomerController@index")->middleware("LaravelRbacEnforcePermission:customer_view");
-``
+```
