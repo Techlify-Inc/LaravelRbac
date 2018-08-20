@@ -1,5 +1,4 @@
 <?php
-
 namespace TechlifyInc\LaravelRbac\Controllers;
 
 use Illuminate\Http\Request;
@@ -17,17 +16,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->hasPermission("role_read"))
-        {
+        if (!auth()->user()->hasPermission("role_read")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
 
-        if (request("loadPermissions") && true == request("loadPermissions"))
-        {
+        if (request("loadPermissions") && true == request("loadPermissions")) {
             $roles = Role::orderBy("label")->with("permissions")->get();
-        }
-        else
-        {
+        } else {
             $roles = Role::orderBy("label")->get();
         }
 
@@ -42,13 +37,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if (!auth()->user()->hasPermission("role_create"))
-        {
+        if (!auth()->user()->hasPermission("role_create")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
 
         $this->validate(request(), [
-            "slug" => "required",
+            "slug"  => "required",
             "label" => "required",
         ]);
 
@@ -56,23 +50,11 @@ class RoleController extends Controller
         $role->slug = request('slug');
         $role->label = request('label');
 
-        if (!$role->save())
-        {
+        if (!$role->save()) {
             return response()->json(['error' => "Failed to save the role. "], 422);
         }
 
         return array("item" => $role, "message" => "Successfully added the new role. ");
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -84,21 +66,19 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        if (!auth()->user()->hasPermission("role_update"))
-        {
+        if (!auth()->user()->hasPermission("role_update")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
 
         $this->validate(request(), [
-            "slug" => "required",
+            "slug"  => "required",
             "label" => "required",
         ]);
 
         $role->slug = request('slug');
         $role->label = request('label');
 
-        if (!$role->save())
-        {
+        if (!$role->save()) {
             return response()->json(['error' => "Failed to save the role. "], 422);
         }
 
@@ -113,8 +93,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->hasPermission("role_delete"))
-        {
+        if (!auth()->user()->hasPermission("role_delete")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
     }
@@ -127,13 +106,11 @@ class RoleController extends Controller
      */
     public function addPermission(Role $role, Permission $permission)
     {
-        if (!auth()->user()->hasPermission("role_permission_add"))
-        {
+        if (!auth()->user()->hasPermission("role_permission_add")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
 
-        if ($role->hasPermission($permission))
-        {
+        if ($role->hasPermission($permission)) {
             return array("success" => false, "message" => "The Role already has the specified permission. ");
         }
 
@@ -149,18 +126,15 @@ class RoleController extends Controller
      */
     public function removePermission(Role $role, Permission $permission)
     {
-        if (!auth()->user()->hasPermission("role_permission_remove"))
-        {
+        if (!auth()->user()->hasPermission("role_permission_remove")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
 
-        if ($role->hasPermission($permission))
-        {
+        if ($role->hasPermission($permission->slug)) {
             $role->removePermission($permission);
             return array("success" => true, "message" => "Successfully removed the permission from the Role. ");
         }
 
         return array("success" => false, "message" => "The Role doesn't have the specified permission, hence it cannot be removed. ");
     }
-
 }

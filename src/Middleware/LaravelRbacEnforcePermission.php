@@ -1,5 +1,4 @@
 <?php
-
 namespace TechlifyInc\LaravelRbac\Middleware;
 
 use Illuminate\Support\Facades\Auth;
@@ -24,20 +23,17 @@ class LaravelRbacEnforcePermission
      * @return mixed
      */
     public function handle($request, Closure $next, $permission)
-    {   
+    {
         /* Check if the user is logged in */
-        if (!Auth::check())
-        {
+        if (!Auth::check()) {
             return response()->json(['error' => "You're not authorized to perform this action. "], 403);
         }
 
         /* Check if the user has the permission */
-        if (!auth()->user()->hasPermission($permission))
-        {
+        if (!auth()->user()->hasPermission($permission)) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 403);
         }
 
         return $next($request);
     }
-
 }
