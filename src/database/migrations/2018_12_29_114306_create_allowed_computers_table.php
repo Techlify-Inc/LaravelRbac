@@ -31,8 +31,9 @@ class CreateAllowedComputersTables extends Migration
         $this->removePermissions();
 
         $models = [
-            ['slug' => 'laravel_rbac_allowed_computer_add', 'label' => "Restricted Access: Allow Computers"],
-            ['slug' => 'laravel_rbac_allowed_computer_remove', 'label' => "Restricted Access: Block Computers"]
+            ['slug' => 'laravel_rbac_allowed_computer_bypass', 'label' => "Computer Restricted Access: Bypass this Access Control"],
+            ['slug' => 'laravel_rbac_allowed_computer_add', 'label' => "Computer Restricted Access: Allow Computers"],
+            ['slug' => 'laravel_rbac_allowed_computer_remove', 'label' => "Computer Restricted Access: Block Computers"]
         ];
 
         $model = new Permission;
@@ -55,6 +56,7 @@ class CreateAllowedComputersTables extends Migration
     private function removePermissions()
     {
         $slugs = [
+            "laravel_rbac_allowed_computer_bypass",
             "laravel_rbac_allowed_computer_add",
             "laravel_rbac_allowed_computer_remove",
         ];
