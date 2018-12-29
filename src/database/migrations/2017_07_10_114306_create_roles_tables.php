@@ -14,16 +14,14 @@ class CreateRolesTables extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function(Blueprint $table)
-        {
+        Schema::create('roles', function(Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->unique();
             $table->string('label')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('permissions', function(Blueprint $table)
-        {
+        Schema::create('permissions', function(Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->unique();
             $table->string('label')->nullable();
@@ -31,42 +29,39 @@ class CreateRolesTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('permission_role', function(Blueprint $table)
-        {
+        Schema::create('permission_role', function(Blueprint $table) {
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
 
             $table->foreign('permission_id')
-                    ->references('id')
-                    ->on('permissions')
-                    ->onDelete('cascade');
-            
+                ->references('id')
+                ->on('permissions')
+                ->onDelete('cascade');
+
             $table->foreign('role_id')
-                    ->references('id')
-                    ->on('roles')
-                    ->onDelete('cascade');
-            
+                ->references('id')
+                ->on('roles')
+                ->onDelete('cascade');
+
             $table->primary(['permission_id', 'role_id']);
         });
-        
-        Schema::create('role_user', function(Blueprint $table)
-        {
+
+        Schema::create('role_user', function(Blueprint $table) {
             $table->integer('role_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            
+
             $table->foreign('role_id')
-                    ->references('id')
-                    ->on('roles')
-                    ->onDelete('cascade');
-            
+                ->references('id')
+                ->on('roles')
+                ->onDelete('cascade');
+
             $table->foreign('user_id')
-                    ->references('id')
-                    ->on('users')
-                    ->onDelete('cascade');
-            
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
             $table->primary(['role_id', 'user_id']);
         });
-        
     }
 
     /**
@@ -81,5 +76,4 @@ class CreateRolesTables extends Migration
         Schema::dropIfExists('roles');
         Schema::dropIfExists('permissions');
     }
-
 }
