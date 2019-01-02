@@ -20,10 +20,14 @@ class UserController extends Controller
         if (!auth()->user()->hasPermission("user_read")) {
             return response()->json(['error' => "You are unauthorized to perform this action. "], 401);
         }
+        
+        $filters = request(['name', 'email', 'enabled', 'role_ids', 'sort_by', 'num_items']);
 
-        $users = User::with('roles')->get();
+        $users = User::filter($filters)
+            ->with('roles')
+            ->get();
 
-        return array("items" => $users);
+        return ["items" => $users];
     }
 
     /**
@@ -52,7 +56,7 @@ class UserController extends Controller
             return response()->json(['error' => "Failed to add the new user. "], 422);
         }
 
-        $roles = request('roles') ?: array();
+        $roles = request('roles') ?: [];
         if (is_array($roles)) {
             foreach ($roles as $rid => $selected) {
                 if (!$selected) {
