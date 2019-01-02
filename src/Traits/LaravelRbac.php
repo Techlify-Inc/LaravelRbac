@@ -102,8 +102,8 @@ trait LaravelRbac
             $query->where('email', 'LIKE', '%' . $filters['email'] . '%');
         }
 
-        if (isset($filters['enabled']) && true === $filters['enabled']) {
-            $query->where('enabled', $filters['enabled']);
+        if (isset($filters['enabled']) && (true === $filters['enabled'] || "true" === $filters['enabled'])) {
+            $query->where('enabled', true);
         }
 
         if (isset($filters['sort_by']) && "" != trim($filters['sort_by'])) {
