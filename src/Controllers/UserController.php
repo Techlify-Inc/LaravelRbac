@@ -24,10 +24,10 @@ class UserController extends Controller
         $filters = request(['name', 'email', 'enabled', 'role_ids', 'sort_by', 'num_items']);
 
         $users = User::filter($filters)
-            ->with('roles')
-            ->get();
+            ->with('roles');
+            //->get();
 
-        return ["items" => $users];
+        return ["items" => $users->get(), "sql" => $users->toSql()];
     }
 
     /**
