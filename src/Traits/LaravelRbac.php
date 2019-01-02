@@ -1,5 +1,4 @@
 <?php
-
 namespace TechlifyInc\LaravelRbac\Traits;
 
 use TechlifyInc\LaravelRbac\Models\Role;
@@ -11,6 +10,13 @@ use TechlifyInc\LaravelRbac\Models\Role;
  */
 trait LaravelRbac
 {
+
+    public function findForPassport($username)
+    {
+        return $this->where('email', $username)
+                ->where("enabled", true)
+                ->first();
+    }
 
     public function roles()
     {
@@ -27,7 +33,7 @@ trait LaravelRbac
         $slug = (is_string($role)) ? $role : $role->slug;
 
         return $this->roles()->save(
-                        Role::where("slug", $slug)->firstOrFail()
+                Role::where("slug", $slug)->firstOrFail()
         );
     }
 
@@ -48,8 +54,7 @@ trait LaravelRbac
 
     public function hasRole($role)
     {
-        if (is_string($role))
-        {
+        if (is_string($role)) {
             return $this->roles->contains('slug', $role);
         }
 
@@ -65,21 +70,17 @@ trait LaravelRbac
      */
     public function hasPermission($permission)
     {
-        if (1 == $this->id)
-        {
+        if (1 == $this->id) {
             return true;
         }
         $slug = (is_string($permission)) ? $permission : $permission->slug;
 
-        foreach ($this->roles as $role)
-        {
-            if ($role->hasPermission($slug))
-            {
+        foreach ($this->roles as $role) {
+            if ($role->hasPermission($slug)) {
                 return true;
             }
         }
 
         return false;
     }
-
 }
