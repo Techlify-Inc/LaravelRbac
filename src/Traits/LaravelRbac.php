@@ -83,4 +83,36 @@ trait LaravelRbac
 
         return false;
     }
+
+    /**
+     * Adding Filtering to users
+     * 
+     * @param type $query
+     * @param type $filters
+     * 
+     * Filters: 'name', 'email', 'enabled', 'role_ids', 'sort_by', 'num_items'
+     */
+    public function scopeFilter($query, $filters)
+    {
+        if (isset($filters['name']) && "" != trim($filters['name'])) {
+            $query->where('name', 'LIKE', '%' . $filters['name'] . '%');
+        }
+
+        if (isset($filters['email']) && "" != trim($filters['email'])) {
+            $query->where('email', 'LIKE', '%' . $filters['email'] . '%');
+        }
+
+        if (isset($filters['enabled']) && true === $filters['enabled']) {
+            $query->where('enabled', $filters['enabled']);
+        }
+
+        if (isset($filters['sort_by']) && "" != trim($filters['sort_by'])) {
+            $sort = explode("|", $filters['sort_by']);
+            $query->orderBy($sort[0], $sort[1]);
+        }
+
+        if (isset($filters['num_items']) && is_numeric($filters['num_items'])) {
+            $query->limit($filters['num_items']);
+        }
+    }
 }
