@@ -23,7 +23,7 @@ class CurrentUserController extends Controller
         }
 
         $permissions = new \Illuminate\Database\Eloquent\Collection();
-        if (isset($user->roles) && is_array($user->roles)) {
+        if (!count($user->roles)) {
             foreach ($user->roles as $role) {
                 $permissions = $permissions->merge($role->permissions);
             }
