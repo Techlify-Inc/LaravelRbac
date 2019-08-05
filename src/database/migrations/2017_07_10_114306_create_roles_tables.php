@@ -15,14 +15,14 @@ class CreateRolesTables extends Migration
     public function up()
     {
         Schema::create('roles', function(Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('slug')->unique();
             $table->string('label')->nullable();
             $table->timestamps();
         });
 
         Schema::create('permissions', function(Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('slug')->unique();
             $table->string('label')->nullable();
             $table->string('description')->nullable();
@@ -30,8 +30,8 @@ class CreateRolesTables extends Migration
         });
 
         Schema::create('permission_role', function(Blueprint $table) {
-            $table->integer('permission_id')->unsigned();
-            $table->integer('role_id')->unsigned();
+            $table->bigInteger('permission_id')->unsigned();
+            $table->bigInteger('role_id')->unsigned();
 
             $table->foreign('permission_id')
                 ->references('id')
@@ -47,8 +47,9 @@ class CreateRolesTables extends Migration
         });
 
         Schema::create('role_user', function(Blueprint $table) {
-            $table->integer('role_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->bigIncrements('id');
+            $table->bigInteger('role_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
 
             $table->foreign('role_id')
                 ->references('id')
